@@ -8,10 +8,18 @@
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class Player extends cc.Component {
+
+    
+    @property(cc.Sprite)
+    playerSprite:cc.Sprite=null
+    @property(cc.SpriteAtlas)
+    tankAtlas:cc.SpriteAtlas=null
+    // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        
+        let spriteFrame=this.tankAtlas.getSpriteFrame("player2U")
+        this.playerSprite.spriteFrame=spriteFrame
     }
 
     start () {
