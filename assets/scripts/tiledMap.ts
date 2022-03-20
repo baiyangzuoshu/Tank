@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import { DataManager } from "./dataManager";
+import { GameManager } from "./gameManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -29,6 +30,8 @@ export default class Map extends cc.Component {
         this.tiledMap=this.node.addComponent(cc.TiledMap)
         this.tiledMap.tmxAsset=tmxAsset
 
+        GameManager.getInstance().setTiledMap(this.tiledMap)
+
         cc.loader.loadRes("prefab/player",cc.Prefab,(err,player)=>{
             if(err){
                 return console.error(err)
@@ -47,6 +50,8 @@ export default class Map extends cc.Component {
         //默认生成的位置是屏幕中间
         player.x=nodePos.x-cc.winSize.width/2+distance.x
         player.y=nodePos.y-cc.winSize.height/2+distance.y
+
+        GameManager.getInstance().setPlayer(player)
     }
 
     test():void{
