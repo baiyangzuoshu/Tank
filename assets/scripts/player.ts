@@ -27,7 +27,7 @@ export default class Player extends cc.Component {
     @property(cc.SpriteAtlas)
     tankAtlas:cc.SpriteAtlas=null
 
-    _drection:TANK_DIRCTION=0
+    _drection:TANK_DIRCTION=TANK_DIRCTION.UP
     _time:number=0
     // LIFE-CYCLE CALLBACKS:
 
@@ -35,19 +35,36 @@ export default class Player extends cc.Component {
         this.init()
     }
 
+    fire(){
+        cc.loader.loadRes("prefab/bullet",cc.Prefab,(err,bulletPrefab:cc.Prefab)=>{
+            let tiledMap=GameManager.getInstance().getTiledMap()
+            let layer:cc.TiledLayer=tiledMap.getLayer("layer_0")
+
+            let bullet=cc.instantiate(bulletPrefab)
+            bullet.parent=layer.node//敌军以及子弹、坦克生成在layer_0层
+            
+            let pArr=this.getDirection3Point(this.getDirection())
+            //取中间点为起始点，layer起始位置是(cc.winSize.width/2,cc.winSize.height/2)
+            let bulletX=pArr[1].x-cc.winSize.width/2
+            let bulletY=pArr[1].y-cc.winSize.height/2
+            bullet.x=bulletX
+            bullet.y=bulletY
+
+            let ts=bullet.getComponent("bullet")
+            ts.setDirection(this.getDirection())
+        })
+    }
+
+    getDirection():TANK_DIRCTION{
+        return this._drection
+    }
+
     setDirection(direction:TANK_DIRCTION){
         switch(direction)
         {
             case TANK_DIRCTION.LEFT:
                 {
-                    let rect=this.playerSprite.node.getBoundingBoxToWorld()
-                    let pArr:Array<cc.Vec2>=[]
-                    let index=(rect.yMax-rect.yMin)/2
-                    for(let y=rect.yMin;y<=rect.yMax;y=y+index)
-                    {
-                        pArr.push(new cc.Vec2(rect.xMin-TANK_SPEED,y))
-                    }
-
+                    let pArr=this.getDirection3Point(direction)
                     if(!this.isWalkByPointArray(pArr)){
                         return
                     }
@@ -62,14 +79,7 @@ export default class Player extends cc.Component {
                 }
             case TANK_DIRCTION.RIGHT:
                 {
-                    let rect=this.playerSprite.node.getBoundingBoxToWorld()
-                    let pArr:Array<cc.Vec2>=[]
-                    let index=(rect.yMax-rect.yMin)/2
-                    for(let y=rect.yMin;y<=rect.yMax;y=y+index)
-                    {
-                        pArr.push(new cc.Vec2(rect.xMax+TANK_SPEED,y))
-                    }
-
+                    let pArr=this.getDirection3Point(direction)
                     if(!this.isWalkByPointArray(pArr)){
                         return
                     }
@@ -84,14 +94,7 @@ export default class Player extends cc.Component {
                 }
             case TANK_DIRCTION.UP:
                 {
-                    let rect=this.playerSprite.node.getBoundingBoxToWorld()
-                    let pArr:Array<cc.Vec2>=[]
-                    let index=(rect.xMax-rect.xMin)/2
-                    for(let x=rect.xMin;x<=rect.xMax;x=x+index)
-                    {
-                        pArr.push(new cc.Vec2(x,rect.yMax+TANK_SPEED))
-                    }
-
+                    let pArr=this.getDirection3Point(direction)
                     if(!this.isWalkByPointArray(pArr)){
                         return
                     }
@@ -106,14 +109,7 @@ export default class Player extends cc.Component {
                 }
             case TANK_DIRCTION.DOWN:
                 {
-                    let rect=this.playerSprite.node.getBoundingBoxToWorld()
-                    let pArr:Array<cc.Vec2>=[]
-                    let index=(rect.xMax-rect.xMin)/2
-                    for(let x=rect.xMin;x<=rect.xMax;x=x+index)
-                    {
-                        pArr.push(new cc.Vec2(x,rect.yMin-TANK_SPEED))
-                    }
-
+                    let pArr=this.getDirection3Point(direction)
                     if(!this.isWalkByPointArray(pArr)){
                         return
                     }
@@ -129,6 +125,61 @@ export default class Player extends cc.Component {
             default:
                 break;
         }
+    }
+
+    getDirection3Point(direction:TANK_DIRCTION):Array<cc.Vec2>{
+        let pArr:Array<cc.Vec2>=[]
+        switch(direction)
+        {
+            case TANK_DIRCTION.LEFT:
+                {
+                    let rect=this.playerSprite.node.getBoundingBoxToWorld()
+                    let index=(rect.yMax-rect.yMin)/2
+                    for(let y=rect.yMin;y<=rect.yMax;y=y+index)
+                    {
+                        pArr.push(new cc.Vec2(rect.xMin-TANK_SPEED,y))
+                    }
+
+                    break;
+                }
+            case TANK_DIRCTION.RIGHT:
+                {
+                    let rect=this.playerSprite.node.getBoundingBoxToWorld()
+                    let index=(rect.yMax-rect.yMin)/2
+                    for(let y=rect.yMin;y<=rect.yMax;y=y+index)
+                    {
+                        pArr.push(new cc.Vec2(rect.xMax+TANK_SPEED,y))
+                    }
+
+                    break;
+                }
+            case TANK_DIRCTION.UP:
+                {
+                    let rect=this.playerSprite.node.getBoundingBoxToWorld()
+                    let index=(rect.xMax-rect.xMin)/2
+                    for(let x=rect.xMin;x<=rect.xMax;x=x+index)
+                    {
+                        pArr.push(new cc.Vec2(x,rect.yMax+TANK_SPEED))
+                    }
+
+                    break;
+                }
+            case TANK_DIRCTION.DOWN:
+                {
+                    let rect=this.playerSprite.node.getBoundingBoxToWorld()
+                    let index=(rect.xMax-rect.xMin)/2
+                    for(let x=rect.xMin;x<=rect.xMax;x=x+index)
+                    {
+                        pArr.push(new cc.Vec2(x,rect.yMin-TANK_SPEED))
+                    }
+
+                    break;
+                }
+            default:
+                break;
+        }
+
+        return pArr
     }
 
     isWalkByPointArray(pArray:Array<cc.Vec2>):boolean{

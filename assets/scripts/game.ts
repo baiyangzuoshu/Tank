@@ -85,7 +85,9 @@ export default class NewClass extends cc.Component {
         }
         else if(BTN_NAME.FIRE==data)
         {
-            
+            let player=GameManager.getInstance().getPlayer()
+            let ts=player.getComponent("player")
+            ts.fire()
         }
     }
 

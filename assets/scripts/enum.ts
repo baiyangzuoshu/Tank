@@ -9,10 +9,12 @@ export  enum    BTN_NAME
 
 export  enum    TANK_DIRCTION
 {
+    NORMAL,
     LEFT,
     RIGHT,
     UP,
-    DOWN
+    DOWN,
+    MAX
 }
 
 export  enum    TILE_ID
