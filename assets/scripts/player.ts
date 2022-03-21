@@ -11,7 +11,7 @@ import { GameManager } from "./gameManager";
 
 const {ccclass, property} = cc._decorator;
 
-const   TANK_SPEED:number=16
+const   TANK_SPEED:number=5
 
 enum TANK_ATLAS_NAME{
     LEFT="player2L",
@@ -28,6 +28,7 @@ export default class Player extends cc.Component {
     tankAtlas:cc.SpriteAtlas=null
 
     _drection:TANK_DIRCTION=0
+    _time:number=0
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -39,13 +40,15 @@ export default class Player extends cc.Component {
         {
             case TANK_DIRCTION.LEFT:
                 {
-                    let worldPos=this.node.convertToWorldSpaceAR(new cc.Vec2(-TANK_SPEED,0))
-                    let tiledMap=GameManager.getInstance().getTiledMap()
-                    let tilePoint=DataManager.getInstance().pointTransfromTile(tiledMap,worldPos)
-                    if(DataManager.getInstance().isTiledMapBorderByPoint(tiledMap,tilePoint)){
-                        return
+                    let rect=this.playerSprite.node.getBoundingBoxToWorld()
+                    let pArr:Array<cc.Vec2>=[]
+                    let index=(rect.yMax-rect.yMin)/2
+                    for(let y=rect.yMin;y<=rect.yMax;y=y+index)
+                    {
+                        pArr.push(new cc.Vec2(rect.xMin-TANK_SPEED,y))
                     }
-                    if(DataManager.getInstance().isExitTileByPoint(tiledMap,tilePoint)){
+
+                    if(!this.isWalkByPointArray(pArr)){
                         return
                     }
 
@@ -59,14 +62,15 @@ export default class Player extends cc.Component {
                 }
             case TANK_DIRCTION.RIGHT:
                 {
-                    let nodeWidth=this.playerSprite.node.width*this.playerSprite.node.scaleX
-                    let worldPos=this.node.convertToWorldSpaceAR(new cc.Vec2(TANK_SPEED+nodeWidth,0))
-                    let tiledMap=GameManager.getInstance().getTiledMap()
-                    let tilePoint=DataManager.getInstance().pointTransfromTile(tiledMap,worldPos)
-                    if(DataManager.getInstance().isTiledMapBorderByPoint(tiledMap,tilePoint)){
-                        return
+                    let rect=this.playerSprite.node.getBoundingBoxToWorld()
+                    let pArr:Array<cc.Vec2>=[]
+                    let index=(rect.yMax-rect.yMin)/2
+                    for(let y=rect.yMin;y<=rect.yMax;y=y+index)
+                    {
+                        pArr.push(new cc.Vec2(rect.xMax+TANK_SPEED,y))
                     }
-                    if(DataManager.getInstance().isExitTileByPoint(tiledMap,tilePoint)){
+
+                    if(!this.isWalkByPointArray(pArr)){
                         return
                     }
 
@@ -80,14 +84,15 @@ export default class Player extends cc.Component {
                 }
             case TANK_DIRCTION.UP:
                 {
-                    let nodeHeight=this.playerSprite.node.height*this.playerSprite.node.scaleX
-                    let worldPos=this.node.convertToWorldSpaceAR(new cc.Vec2(0,TANK_SPEED+nodeHeight))
-                    let tiledMap=GameManager.getInstance().getTiledMap()
-                    let tilePoint=DataManager.getInstance().pointTransfromTile(tiledMap,worldPos)
-                    if(DataManager.getInstance().isTiledMapBorderByPoint(tiledMap,tilePoint)){
-                        return
+                    let rect=this.playerSprite.node.getBoundingBoxToWorld()
+                    let pArr:Array<cc.Vec2>=[]
+                    let index=(rect.xMax-rect.xMin)/2
+                    for(let x=rect.xMin;x<=rect.xMax;x=x+index)
+                    {
+                        pArr.push(new cc.Vec2(x,rect.yMax+TANK_SPEED))
                     }
-                    if(DataManager.getInstance().isExitTileByPoint(tiledMap,tilePoint)){
+
+                    if(!this.isWalkByPointArray(pArr)){
                         return
                     }
 
@@ -101,14 +106,15 @@ export default class Player extends cc.Component {
                 }
             case TANK_DIRCTION.DOWN:
                 {
-                    let nodeHeight=this.playerSprite.node.height*this.playerSprite.node.scaleX
-                    let worldPos=this.node.convertToWorldSpaceAR(new cc.Vec2(0,-TANK_SPEED-nodeHeight))
-                    let tiledMap=GameManager.getInstance().getTiledMap()
-                    let tilePoint=DataManager.getInstance().pointTransfromTile(tiledMap,worldPos)
-                    if(DataManager.getInstance().isTiledMapBorderByPoint(tiledMap,tilePoint)){
-                        return
+                    let rect=this.playerSprite.node.getBoundingBoxToWorld()
+                    let pArr:Array<cc.Vec2>=[]
+                    let index=(rect.xMax-rect.xMin)/2
+                    for(let x=rect.xMin;x<=rect.xMax;x=x+index)
+                    {
+                        pArr.push(new cc.Vec2(x,rect.yMin-TANK_SPEED))
                     }
-                    if(DataManager.getInstance().isExitTileByPoint(tiledMap,tilePoint)){
+
+                    if(!this.isWalkByPointArray(pArr)){
                         return
                     }
 
@@ -125,6 +131,22 @@ export default class Player extends cc.Component {
         }
     }
 
+    isWalkByPointArray(pArray:Array<cc.Vec2>):boolean{
+        for(let i=0;i<pArray.length;i++)
+        {
+            let tiledMap=GameManager.getInstance().getTiledMap()
+            let tilePoint=DataManager.getInstance().pointTransfromTile(tiledMap,pArray[i])
+            if(DataManager.getInstance().isTiledMapBorderByPoint(tiledMap,tilePoint)){
+                return false
+            }
+            if(DataManager.getInstance().isExitTileByPoint(tiledMap,tilePoint)){
+                return false
+            }
+        }
+
+        return true
+    }
+
     init():void{
         let spriteFrame=this.tankAtlas.getSpriteFrame(TANK_ATLAS_NAME.UP)
         this.playerSprite.spriteFrame=spriteFrame
@@ -134,5 +156,7 @@ export default class Player extends cc.Component {
 
     }
 
-    // update (dt) {}
+    update (dt) {
+
+    }
 }
