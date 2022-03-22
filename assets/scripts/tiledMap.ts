@@ -38,6 +38,25 @@ export default class Map extends cc.Component {
             }
             this.createPlayer(player)
         })
+
+        cc.loader.loadRes("prefab/enemy",cc.Prefab,(err,enemyPrefab)=>{
+            if(err){
+                return console.error(err)
+            }
+            this.createEnemy(enemyPrefab)
+        })
+    }
+
+    createEnemy(enemyPrefab:cc.Prefab):void{
+        let layer:cc.TiledLayer=this.tiledMap.getLayer("layer_0")
+
+        let enemy=cc.instantiate(enemyPrefab)
+        enemy.parent=layer.node//坦克生成在layer_0层,包括之后的敌军
+        let nodePos=DataManager.getInstance().tileTransfromPoint(this.tiledMap,new cc.Vec2(0,1))
+        let distance=DataManager.getInstance().getTileMapDistance(this.tiledMap)
+        //默认生成的位置是屏幕中间
+        enemy.x=nodePos.x-cc.winSize.width/2+distance.x
+        enemy.y=nodePos.y-cc.winSize.height/2+distance.y
     }
 
     createPlayer(playerPrefab:cc.Prefab):void{

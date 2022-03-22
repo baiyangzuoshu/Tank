@@ -7,6 +7,19 @@ export  enum    BTN_NAME
     FIRE="fire"
 }
 
+export const   TANK_SPEED:number=5
+
+export enum    MOVE_TYPE
+{
+    NORMAL,
+    RANDOM,
+    RADIUS,
+    LINE,
+    ASTAR,
+    SEARCH,
+    MAX
+}
+
 export  enum    TANK_TYPE
 {
     NORMAL=0,

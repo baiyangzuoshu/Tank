@@ -6,12 +6,10 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import { DataManager } from "./dataManager";
-import { TANK_DIRCTION, TANK_TYPE } from "./enum";
+import { TANK_DIRCTION, TANK_SPEED, TANK_TYPE } from "./enum";
 import { GameManager } from "./gameManager";
 
 const {ccclass, property} = cc._decorator;
-
-const   TANK_SPEED:number=5
 
 @ccclass
 export default class TankBase extends cc.Component {
