@@ -5,7 +5,9 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { DataManager } from "./dataManager";
 import { TANK_DIRCTION } from "./enum";
+import { GameManager } from "./gameManager";
 
 const {ccclass, property} = cc._decorator;
 const   BULLET_SPEED=5
@@ -34,21 +36,25 @@ export default class NewClass extends cc.Component {
             case TANK_DIRCTION.LEFT:
                 {
                     this.node.x-=BULLET_SPEED
+                    let worldPos=this.node.convertToWorldSpaceAR(new cc.Vec2(0,0))
                     break;
                 }
             case TANK_DIRCTION.RIGHT:
                 {
-                   this.node.x+=BULLET_SPEED
+                    this.node.x+=BULLET_SPEED
+                    let worldPos=this.node.convertToWorldSpaceAR(new cc.Vec2(0,0))
                     break;
                 }
             case TANK_DIRCTION.UP:
                 {
                     this.node.y+=BULLET_SPEED
+                    let worldPos=this.node.convertToWorldSpaceAR(new cc.Vec2(0,0))
                     break;
                 }
             case TANK_DIRCTION.DOWN:
                 {
                     this.node.y-=BULLET_SPEED
+                    let worldPos=this.node.convertToWorldSpaceAR(new cc.Vec2(0,0))
                     break;
                 }
             default:

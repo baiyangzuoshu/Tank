@@ -1,4 +1,5 @@
-import { TILE_ID } from "./enum"
+import { TANK_DIRCTION, TILE_ID } from "./enum"
+import { GameManager } from "./gameManager"
 
 export  class   DataManager{
     private static  _instance:DataManager=null
@@ -73,8 +74,7 @@ export  class   DataManager{
         return false
     }
     //是否存在图块
-    isExitTileByPoint(tiledMap:cc.TiledMap,tileP:cc.Vec2):boolean{
-        console.log(tileP.x,tileP.y)
+    isExitTileByPoint(tiledMap:cc.TiledMap,tileP:cc.Vec2,isClear=false):boolean{
         let layers:cc.TiledLayer[]=tiledMap.getLayers()
 
         for(let i=0;i<layers.length;i++)
@@ -84,11 +84,81 @@ export  class   DataManager{
             let gID=layer.getTileGIDAt(tileP)
             if(gID>0&&(TILE_ID.STEEL_5==gID||TILE_ID.STEEL_6==gID||TILE_ID.STEEL_11==gID||TILE_ID.STEEL_12==gID
                 ||TILE_ID.WALL_13==gID||TILE_ID.WALL_14==gID||TILE_ID.WALL_19==gID||TILE_ID.WALL_20==gID)){
-                console.log(i,layer.getLayerName(),gID)
                 return true
             }
         }
 
         return false
+    }
+    //坦克、子弹是否能行走
+    isWalkByPointArray(pArray:Array<cc.Vec2>):boolean{
+        for(let i=0;i<pArray.length;i++)
+        {
+            let tiledMap=GameManager.getInstance().getTiledMap()
+            let tilePoint=DataManager.getInstance().pointTransfromTile(tiledMap,pArray[i])
+            if(DataManager.getInstance().isTiledMapBorderByPoint(tiledMap,tilePoint)){
+                return false
+            }
+            if(DataManager.getInstance().isExitTileByPoint(tiledMap,tilePoint)){
+                return false
+            }
+        }
+
+        return true
+    }
+    //坦克、子弹朝向的三个点
+    getDirection3Point(direction:TANK_DIRCTION,node:cc.Node,speed:number):Array<cc.Vec2>{
+        let pArr:Array<cc.Vec2>=[]
+        switch(direction)
+        {
+            case TANK_DIRCTION.LEFT:
+                {
+                    let rect=node.getBoundingBoxToWorld()
+                    let index=(rect.yMax-rect.yMin)/2
+                    for(let y=rect.yMin;y<=rect.yMax;y=y+index)
+                    {
+                        pArr.push(new cc.Vec2(rect.xMin-speed,y))
+                    }
+
+                    break;
+                }
+            case TANK_DIRCTION.RIGHT:
+                {
+                    let rect=node.getBoundingBoxToWorld()
+                    let index=(rect.yMax-rect.yMin)/2
+                    for(let y=rect.yMin;y<=rect.yMax;y=y+index)
+                    {
+                        pArr.push(new cc.Vec2(rect.xMax+speed,y))
+                    }
+
+                    break;
+                }
+            case TANK_DIRCTION.UP:
+                {
+                    let rect=node.getBoundingBoxToWorld()
+                    let index=(rect.xMax-rect.xMin)/2
+                    for(let x=rect.xMin;x<=rect.xMax;x=x+index)
+                    {
+                        pArr.push(new cc.Vec2(x,rect.yMax+speed))
+                    }
+
+                    break;
+                }
+            case TANK_DIRCTION.DOWN:
+                {
+                    let rect=node.getBoundingBoxToWorld()
+                    let index=(rect.xMax-rect.xMin)/2
+                    for(let x=rect.xMin;x<=rect.xMax;x=x+index)
+                    {
+                        pArr.push(new cc.Vec2(x,rect.yMin-speed))
+                    }
+
+                    break;
+                }
+            default:
+                break;
+        }
+
+        return pArr
     }
 }
