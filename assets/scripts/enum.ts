@@ -7,6 +7,14 @@ export  enum    BTN_NAME
     FIRE="fire"
 }
 
+export  enum    TANK_TYPE
+{
+    NORMAL=0,
+    PLAYER=1,
+    ENEMY=2,
+    MAX
+}
+
 export  enum    TANK_DIRCTION
 {
     NORMAL,

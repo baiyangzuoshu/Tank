@@ -11,10 +11,11 @@ import TankBase from "./TankBase";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class Player extends TankBase {
+export default class Enemy extends TankBase {
+
 
     onLoad () {
-        this.setType(TANK_TYPE.PLAYER)
+        this.setType(TANK_TYPE.ENEMY)
         this.init()
     }
 
@@ -22,7 +23,5 @@ export default class Player extends TankBase {
 
     }
 
-    update (dt) {
-
-    }
+    // update (dt) {}
 }

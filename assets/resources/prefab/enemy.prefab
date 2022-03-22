@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "player",
+    "_name": "enemy",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -105,7 +105,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 60,
-      "height": 58
+      "height": 60
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -125,7 +125,7 @@
         1,
         0.4,
         0.4,
-        1
+        0.4
       ]
     },
     "_eulerAngles": {
@@ -157,7 +157,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "9de4a7f5-3121-4c7e-8268-49b29a670961"
+      "__uuid__": "35efd03e-72fc-48f4-ab76-a4123dc26c3b"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -181,13 +181,13 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "a9cd253d-2e0c-4a2a-bde2-be4299f5d48f"
+      "__uuid__": "2951996d-02b0-40be-9c88-6fcc4554380b"
     },
-    "fileId": "45HaQ6F/xLOoMdBuFZ9nR9",
+    "fileId": "7bhzw8+jFJdr41eSCIQNAU",
     "sync": false
   },
   {
-    "__type__": "c46c6chQlVJGpwNECrpA3uV",
+    "__type__": "fc95dXHGPlCYZJuf+2RZcHb",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -208,9 +208,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "a9cd253d-2e0c-4a2a-bde2-be4299f5d48f"
+      "__uuid__": "2951996d-02b0-40be-9c88-6fcc4554380b"
     },
-    "fileId": "c51/0xj9tPFpKE5TVYk8VQ",
+    "fileId": "6eTr6D/ytE/qSRm4WRYvOV",
     "sync": false
   }
 ]
