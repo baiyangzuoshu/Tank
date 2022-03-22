@@ -19,6 +19,7 @@ export  enum    TANK_DIRCTION
 
 export  enum    TILE_ID
 {
+    NORMAL=0,
     NULL_1=1,
     NULL_2=2,
     GRASS_3=3,

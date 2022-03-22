@@ -7,7 +7,6 @@
 
 import { DataManager } from "./dataManager";
 import { TANK_DIRCTION } from "./enum";
-import { GameManager } from "./gameManager";
 
 const {ccclass, property} = cc._decorator;
 const   BULLET_SPEED=5
@@ -31,34 +30,40 @@ export default class NewClass extends cc.Component {
     }
 
     update (dt) {
-        switch(this.getDirection())
+        if(this.getDirection()>TANK_DIRCTION.NORMAL&&this.getDirection()<TANK_DIRCTION.MAX)
         {
-            case TANK_DIRCTION.LEFT:
-                {
-                    this.node.x-=BULLET_SPEED
-                    let worldPos=this.node.convertToWorldSpaceAR(new cc.Vec2(0,0))
-                    break;
-                }
-            case TANK_DIRCTION.RIGHT:
-                {
-                    this.node.x+=BULLET_SPEED
-                    let worldPos=this.node.convertToWorldSpaceAR(new cc.Vec2(0,0))
-                    break;
-                }
-            case TANK_DIRCTION.UP:
-                {
-                    this.node.y+=BULLET_SPEED
-                    let worldPos=this.node.convertToWorldSpaceAR(new cc.Vec2(0,0))
-                    break;
-                }
-            case TANK_DIRCTION.DOWN:
-                {
-                    this.node.y-=BULLET_SPEED
-                    let worldPos=this.node.convertToWorldSpaceAR(new cc.Vec2(0,0))
-                    break;
-                }
-            default:
-                break;
+            //在下一帧处理，这样显得有质感
+            let pArr=DataManager.getInstance().getDirection3Point(this.getDirection(),this.node,0)
+            if(!DataManager.getInstance().isWalkByPointArray(pArr,true)){
+                this.node.destroy()
+                return
+            }
+
+            switch(this.getDirection())
+            {
+                case TANK_DIRCTION.LEFT:
+                    {
+                        this.node.x-=BULLET_SPEED
+                        break
+                    }
+                case TANK_DIRCTION.RIGHT:
+                    {
+                        this.node.x+=BULLET_SPEED
+                        break
+                    }
+                case TANK_DIRCTION.UP:
+                    {
+                        this.node.y+=BULLET_SPEED
+                        break
+                    }
+                case TANK_DIRCTION.DOWN:
+                    {
+                        this.node.y-=BULLET_SPEED
+                        break
+                    }
+                default:
+                    break
+            }
         }
     }
 }

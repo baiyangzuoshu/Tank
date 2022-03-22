@@ -82,16 +82,26 @@ export  class   DataManager{
             let layer=layers[i]
             
             let gID=layer.getTileGIDAt(tileP)
-            if(gID>0&&(TILE_ID.STEEL_5==gID||TILE_ID.STEEL_6==gID||TILE_ID.STEEL_11==gID||TILE_ID.STEEL_12==gID
-                ||TILE_ID.WALL_13==gID||TILE_ID.WALL_14==gID||TILE_ID.WALL_19==gID||TILE_ID.WALL_20==gID)){
-                return true
+            if(gID>0){
+                if(TILE_ID.WALL_13==gID||TILE_ID.WALL_14==gID||TILE_ID.WALL_19==gID||TILE_ID.WALL_20==gID)
+                {
+                    if(isClear)
+                    {
+                        layer.setTileGIDAt(TILE_ID.NULL_1,tileP.x,tileP.y)
+                    }
+                    return true
+                }
+                else if(TILE_ID.STEEL_5==gID||TILE_ID.STEEL_6==gID||TILE_ID.STEEL_11==gID||TILE_ID.STEEL_12==gID)
+                {
+                    return true
+                }
             }
         }
 
         return false
     }
     //坦克、子弹是否能行走
-    isWalkByPointArray(pArray:Array<cc.Vec2>):boolean{
+    isWalkByPointArray(pArray:Array<cc.Vec2>,isClear=false):boolean{
         for(let i=0;i<pArray.length;i++)
         {
             let tiledMap=GameManager.getInstance().getTiledMap()
@@ -99,7 +109,7 @@ export  class   DataManager{
             if(DataManager.getInstance().isTiledMapBorderByPoint(tiledMap,tilePoint)){
                 return false
             }
-            if(DataManager.getInstance().isExitTileByPoint(tiledMap,tilePoint)){
+            if(DataManager.getInstance().isExitTileByPoint(tiledMap,tilePoint,isClear)){
                 return false
             }
         }
