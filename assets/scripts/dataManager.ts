@@ -24,7 +24,7 @@ export  class   DataManager{
     pointTransfromTile(tiledMap:cc.TiledMap,worldPos:cc.Vec2):cc.Vec2{
         let mapSize=tiledMap.getMapSize()
         let tileSize=tiledMap.getTileSize()
-        //Tiled工具是以左上角为原点，OpenGL则是以左下角为原点
+       
         let dinstance=this.getTileMapDistance(tiledMap)
         let distanceX=tiledMap.node.x-dinstance.x
         let distanceY=tiledMap.node.y-dinstance.y
@@ -32,9 +32,10 @@ export  class   DataManager{
         let nodePos=tiledMap.node.convertToNodeSpaceAR(worldPos)
         nodePos.x=nodePos.x+distanceX
         nodePos.y=nodePos.y+distanceY
-        
+         //Tiled工具是以左上角为原点，OpenGL则是以左下角为原点
         let x=Math.floor(nodePos.x/tileSize.width)
         let y=Math.floor((mapSize.height*tileSize.height-nodePos.y)/tileSize.height)
+        //临界点
         //[1-mapSize.width]=>[0,mapSize.width-1]
         if(x>=mapSize.width)
         {
@@ -51,9 +52,9 @@ export  class   DataManager{
     tileTransfromPoint(tiledMap:cc.TiledMap,tileP:cc.Vec2):cc.Vec2{
         let mapSize=tiledMap.getMapSize()
         let tileSize=tiledMap.getTileSize()
-        //Tiled工具是以左上角为原点，OpenGL则是以左下角为原点
+        
         let dinstance=this.getTileMapDistance(tiledMap)
-
+        //Tiled工具是以左上角为原点，OpenGL则是以左下角为原点
         let x=tileP.x*tileSize.width
         let y=(mapSize.height-1-tileP.y)*tileSize.height+dinstance.y
         return new cc.Vec2(x,y)

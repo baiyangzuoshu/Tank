@@ -59,34 +59,26 @@ export default class NewClass extends cc.Component {
     }
 
     onBtnEvent(event,data:BTN_NAME){
+        let player=GameManager.getInstance().getPlayer()
+        let ts=player.getComponent("player")
         if(BTN_NAME.LEFT==data)
         {
-            let player=GameManager.getInstance().getPlayer()
-            let ts=player.getComponent("player")
             ts.setDirection(TANK_DIRCTION.LEFT)
         }
         else if(BTN_NAME.RIGHT==data)
         {
-            let player=GameManager.getInstance().getPlayer()
-            let ts=player.getComponent("player")
             ts.setDirection(TANK_DIRCTION.RIGHT)
         }
         else if(BTN_NAME.UP==data)
         {
-            let player=GameManager.getInstance().getPlayer()
-            let ts=player.getComponent("player")
             ts.setDirection(TANK_DIRCTION.UP)
         }
         else if(BTN_NAME.DOWN==data)
         {
-            let player=GameManager.getInstance().getPlayer()
-            let ts=player.getComponent("player")
             ts.setDirection(TANK_DIRCTION.DOWN)
         }
         else if(BTN_NAME.FIRE==data)
         {
-            let player=GameManager.getInstance().getPlayer()
-            let ts=player.getComponent("player")
             ts.fire()
         }
     }

@@ -73,7 +73,7 @@ export default class TankBase extends cc.Component {
                         speed=TANK_SPEED
                     }
 
-                    let pArr=DataManager.getInstance().getDirection3Point(direction,this.sprite.node,TANK_SPEED)
+                    let pArr=DataManager.getInstance().getDirection3Point(direction,this.sprite.node,speed)
                     if(!DataManager.getInstance().isWalkByPointArray(pArr)){
                         return
                     }
@@ -93,7 +93,7 @@ export default class TankBase extends cc.Component {
                         speed=TANK_SPEED
                     }
 
-                    let pArr=DataManager.getInstance().getDirection3Point(direction,this.sprite.node,TANK_SPEED)
+                    let pArr=DataManager.getInstance().getDirection3Point(direction,this.sprite.node,speed)
                     if(!DataManager.getInstance().isWalkByPointArray(pArr)){
                         return
                     }
@@ -113,7 +113,7 @@ export default class TankBase extends cc.Component {
                         speed=TANK_SPEED
                     }
 
-                    let pArr=DataManager.getInstance().getDirection3Point(direction,this.sprite.node,TANK_SPEED)
+                    let pArr=DataManager.getInstance().getDirection3Point(direction,this.sprite.node,speed)
                     if(!DataManager.getInstance().isWalkByPointArray(pArr)){
                         return
                     }
@@ -133,7 +133,7 @@ export default class TankBase extends cc.Component {
                         speed=TANK_SPEED
                     }
                     
-                    let pArr=DataManager.getInstance().getDirection3Point(direction,this.sprite.node,TANK_SPEED)
+                    let pArr=DataManager.getInstance().getDirection3Point(direction,this.sprite.node,speed)
                     if(!DataManager.getInstance().isWalkByPointArray(pArr)){
                         return
                     }
