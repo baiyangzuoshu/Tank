@@ -172,4 +172,24 @@ export  class   DataManager{
 
         return pArr
     }
+    //获取两点之间的距离
+    getDistanceBy2Point(v1:cc.Vec2,v2:cc.Vec2):number{
+        let x=Math.abs(v1.x-v2.x)
+        let y=Math.abs(v1.y-v2.y)
+        let distance=Math.ceil(Math.sqrt(x*x+y*y))
+
+        return distance
+    }
+    //计算玩家距离
+    getPlayerDistanceByTiledPos(tiledPos:cc.Vec2):number{
+        let player=GameManager.getInstance().getPlayer()
+        let tiledMap=GameManager.getInstance().getTiledMap()
+
+        let worldPosPlayer=player.convertToWorldSpaceAR(new cc.Vec2(12,12))
+        let playerTiled=this.pointTransfromTile(tiledMap,worldPosPlayer)
+
+        let disntacne=this.getDistanceBy2Point(playerTiled,tiledPos)
+
+        return disntacne
+    }
 }

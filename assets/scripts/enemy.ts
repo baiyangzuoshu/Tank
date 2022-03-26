@@ -7,6 +7,7 @@
 
 import { DataManager } from "./dataManager";
 import { MOVE_TYPE, TANK_DIRCTION, TANK_SPEED, TANK_TYPE } from "./enum";
+import { GameManager } from "./gameManager";
 import TankBase from "./TankBase";
 
 const {ccclass, property} = cc._decorator;
@@ -40,6 +41,11 @@ export default class Enemy extends TankBase {
                     this.randomMove()
                     break
                 }
+            case MOVE_TYPE.ASTAR:
+                {
+                    this.aStarMove()
+                    break
+                }
             default:
                 break
         }
@@ -48,6 +54,14 @@ export default class Enemy extends TankBase {
         //直线移动
         //A*目标移动
         //深度搜索移动
+    }
+
+    aStarMove():void{
+        let tiledMap=GameManager.getInstance().getTiledMap()
+        let worldPosEnemy=this.node.convertToWorldSpaceAR(new cc.Vec2(12,12))
+        let enemyTiled=DataManager.getInstance().pointTransfromTile(tiledMap,worldPosEnemy)
+        let distance=DataManager.getInstance().getPlayerDistanceByTiledPos(enemyTiled)
+        console.log("aStarMove",distance)
     }
 
     randomMove(){

@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import { DataManager } from "./dataManager";
+import { MOVE_TYPE } from "./enum";
 import { GameManager } from "./gameManager";
 
 const {ccclass, property} = cc._decorator;
@@ -52,6 +53,9 @@ export default class Map extends cc.Component {
 
         let enemy=cc.instantiate(enemyPrefab)
         enemy.parent=layer.node//坦克生成在layer_0层,包括之后的敌军
+        let ts=enemy.getComponent("enemy")
+        ts.setMoveType(MOVE_TYPE.ASTAR)
+        
         let nodePos=DataManager.getInstance().tileTransfromPoint(this.tiledMap,new cc.Vec2(0,1))
         let distance=DataManager.getInstance().getTileMapDistance(this.tiledMap)
         //默认生成的位置是屏幕中间
