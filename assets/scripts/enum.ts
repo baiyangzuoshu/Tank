@@ -22,13 +22,13 @@ export enum    MOVE_TYPE
 
 export  enum    TANK_TYPE
 {
-    NORMAL=0,
-    PLAYER=1,
-    ENEMY=2,
+    NORMAL,
+    PLAYER,
+    ENEMY,
     MAX
 }
 
-export  enum    TANK_DIRCTION
+export  enum    TANK_DIRECTION
 {
     NORMAL,
     LEFT,

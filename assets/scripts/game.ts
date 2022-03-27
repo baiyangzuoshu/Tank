@@ -5,7 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import { BTN_NAME, TANK_DIRCTION } from "./enum";
+import { BTN_NAME, TANK_DIRECTION } from "./enum";
 import { GameManager } from "./gameManager";
 
 const {ccclass, property} = cc._decorator;
@@ -63,19 +63,19 @@ export default class NewClass extends cc.Component {
         let ts=player.getComponent("player")
         if(BTN_NAME.LEFT==data)
         {
-            ts.setDirection(TANK_DIRCTION.LEFT)
+            ts.setDirection(TANK_DIRECTION.LEFT)
         }
         else if(BTN_NAME.RIGHT==data)
         {
-            ts.setDirection(TANK_DIRCTION.RIGHT)
+            ts.setDirection(TANK_DIRECTION.RIGHT)
         }
         else if(BTN_NAME.UP==data)
         {
-            ts.setDirection(TANK_DIRCTION.UP)
+            ts.setDirection(TANK_DIRECTION.UP)
         }
         else if(BTN_NAME.DOWN==data)
         {
-            ts.setDirection(TANK_DIRCTION.DOWN)
+            ts.setDirection(TANK_DIRECTION.DOWN)
         }
         else if(BTN_NAME.FIRE==data)
         {

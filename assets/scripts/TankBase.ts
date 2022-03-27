@@ -6,7 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import { DataManager } from "./dataManager";
-import { TANK_DIRCTION, TANK_SPEED, TANK_TYPE } from "./enum";
+import { TANK_DIRECTION, TANK_SPEED, TANK_TYPE } from "./enum";
 import { GameManager } from "./gameManager";
 
 const {ccclass, property} = cc._decorator;
@@ -18,7 +18,7 @@ export default class TankBase extends cc.Component {
     @property(cc.SpriteAtlas)
     tankAtlas:cc.SpriteAtlas=null
 
-    _drection:TANK_DIRCTION=TANK_DIRCTION.UP
+    _drection:TANK_DIRECTION=TANK_DIRECTION.UP
     _type:TANK_TYPE=TANK_TYPE.NORMAL
     // LIFE-CYCLE CALLBACKS:
 
@@ -57,97 +57,37 @@ export default class TankBase extends cc.Component {
         })
     }
 
-    getDirection():TANK_DIRCTION{
+    getDirection():TANK_DIRECTION{
         return this._drection
     }
 
-    setDirection(direction:TANK_DIRCTION){
-        //perf:转向和行走需要分开
-        switch(direction)
+    setDirection(direction:TANK_DIRECTION){
+        if(direction<TANK_DIRECTION.NORMAL||direction>=TANK_DIRECTION.MAX)
+           return
+
+        let speed=0//默认是转向
+        if(this._drection==direction)//行走
         {
-            case TANK_DIRCTION.LEFT:
-                {
-                    let speed=0//默认是转向
-                    if(this._drection==direction)//行走
-                    {
-                        speed=TANK_SPEED
-                    }
-
-                    let pArr=DataManager.getInstance().getDirection3Point(direction,this.sprite.node,speed)
-                    if(!DataManager.getInstance().isWalkByPointArray(pArr)){
-                        return
-                    }
-
-                    this._drection=direction
-
-                    this.updateTankSprite()
-
-                    this.node.x-=TANK_SPEED
-                    break;
-                }
-            case TANK_DIRCTION.RIGHT:
-                {
-                    let speed=0//默认是转向
-                    if(this._drection==direction)//行走
-                    {
-                        speed=TANK_SPEED
-                    }
-
-                    let pArr=DataManager.getInstance().getDirection3Point(direction,this.sprite.node,speed)
-                    if(!DataManager.getInstance().isWalkByPointArray(pArr)){
-                        return
-                    }
-
-                    this._drection=direction
-                    
-                    this.updateTankSprite()
-
-                    this.node.x+=TANK_SPEED
-                    break;
-                }
-            case TANK_DIRCTION.UP:
-                {
-                    let speed=0//默认是转向
-                    if(this._drection==direction)//行走
-                    {
-                        speed=TANK_SPEED
-                    }
-
-                    let pArr=DataManager.getInstance().getDirection3Point(direction,this.sprite.node,speed)
-                    if(!DataManager.getInstance().isWalkByPointArray(pArr)){
-                        return
-                    }
-
-                    this._drection=direction
-                    
-                    this.updateTankSprite()
-
-                    this.node.y+=TANK_SPEED
-                    break;
-                }
-            case TANK_DIRCTION.DOWN:
-                {
-                    let speed=0//默认是转向
-                    if(this._drection==direction)//行走
-                    {
-                        speed=TANK_SPEED
-                    }
-                    
-                    let pArr=DataManager.getInstance().getDirection3Point(direction,this.sprite.node,speed)
-                    if(!DataManager.getInstance().isWalkByPointArray(pArr)){
-                        return
-                    }
-
-                    this._drection=direction
-                    
-                    this.updateTankSprite()
-
-                    this.node.y-=TANK_SPEED
-                    break;
-                }
-            default:
-                break;
+            speed=TANK_SPEED
         }
+
+        let pArr=DataManager.getInstance().getDirection3Point(direction,this.sprite.node,speed)
+        if(!DataManager.getInstance().isWalkByPointArray(pArr)){
+            return
+        }
+
+        this._drection=direction
+
+        this.updateTankSprite()
+
+        if(TANK_DIRECTION.LEFT==direction)
+            this.node.x-=speed
+        else if(TANK_DIRECTION.RIGHT==direction)
+            this.node.x+=speed
+        else if(TANK_DIRECTION.UP==direction)
+            this.node.y+=speed
+        else if(TANK_DIRECTION.DOWN==direction)
+            this.node.y-=speed
     }
 
     init():void{
@@ -166,22 +106,22 @@ export default class TankBase extends cc.Component {
         let directionName=""
         switch(this.getDirection())
         {
-            case TANK_DIRCTION.LEFT:
+            case TANK_DIRECTION.LEFT:
                 {
                     directionName="L"
                     break;
                 }
-            case TANK_DIRCTION.RIGHT:
+            case TANK_DIRECTION.RIGHT:
                 {
                     directionName="R"
                     break;
                 }
-            case TANK_DIRCTION.UP:
+            case TANK_DIRECTION.UP:
                 {
                     directionName="U"
                     break;
                 }
-            case TANK_DIRCTION.DOWN:
+            case TANK_DIRECTION.DOWN:
                 {
                     directionName="D"
                     break;

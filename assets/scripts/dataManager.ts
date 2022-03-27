@@ -1,4 +1,4 @@
-import { TANK_DIRCTION, TILE_ID } from "./enum"
+import { TANK_DIRECTION, TILE_ID } from "./enum"
 import { GameManager } from "./gameManager"
 
 export  class   DataManager{
@@ -118,11 +118,11 @@ export  class   DataManager{
         return true
     }
     //坦克、子弹朝向的三个点
-    getDirection3Point(direction:TANK_DIRCTION,node:cc.Node,speed:number):Array<cc.Vec2>{
+    getDirection3Point(direction:TANK_DIRECTION,node:cc.Node,speed:number):Array<cc.Vec2>{
         let pArr:Array<cc.Vec2>=[]
         switch(direction)
         {
-            case TANK_DIRCTION.LEFT:
+            case TANK_DIRECTION.LEFT:
                 {
                     let rect=node.getBoundingBoxToWorld()
                     let index=(rect.yMax-rect.yMin)/2
@@ -133,7 +133,7 @@ export  class   DataManager{
 
                     break;
                 }
-            case TANK_DIRCTION.RIGHT:
+            case TANK_DIRECTION.RIGHT:
                 {
                     let rect=node.getBoundingBoxToWorld()
                     let index=(rect.yMax-rect.yMin)/2
@@ -144,7 +144,7 @@ export  class   DataManager{
 
                     break;
                 }
-            case TANK_DIRCTION.UP:
+            case TANK_DIRECTION.UP:
                 {
                     let rect=node.getBoundingBoxToWorld()
                     let index=(rect.xMax-rect.xMin)/2
@@ -155,7 +155,7 @@ export  class   DataManager{
 
                     break;
                 }
-            case TANK_DIRCTION.DOWN:
+            case TANK_DIRECTION.DOWN:
                 {
                     let rect=node.getBoundingBoxToWorld()
                     let index=(rect.xMax-rect.xMin)/2
@@ -182,14 +182,18 @@ export  class   DataManager{
     }
     //计算玩家距离
     getPlayerDistanceByTiledPos(tiledPos:cc.Vec2):number{
-        let player=GameManager.getInstance().getPlayer()
-        let tiledMap=GameManager.getInstance().getTiledMap()
-
-        let worldPosPlayer=player.convertToWorldSpaceAR(new cc.Vec2(12,12))
-        let playerTiled=this.pointTransfromTile(tiledMap,worldPosPlayer)
-
+        let playerTiled=this.getPlayerTiled()
         let disntacne=this.getDistanceBy2Point(playerTiled,tiledPos)
 
         return disntacne
+    }
+    //获取玩家地图坐标
+    getPlayerTiled():cc.Vec2{
+        let tiledMap=GameManager.getInstance().getTiledMap()
+        let player=GameManager.getInstance().getPlayer()
+        let worldPosPlayer=player.convertToWorldSpaceAR(new cc.Vec2(12,12))
+        let playerTiled=this.pointTransfromTile(tiledMap,worldPosPlayer)
+
+        return playerTiled
     }
 }
